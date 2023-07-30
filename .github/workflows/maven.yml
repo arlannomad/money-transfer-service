@@ -1,4 +1,4 @@
-name: Build and Deploy Money Transfer Service
+name: Build & Deploy Money Transfer Service
 
 on:
   push:
@@ -22,7 +22,7 @@ jobs:
       - name: Unit Tests
         run: mvn -B test --file pom.xml
 
-      - name: Money Transfer Service
+      - name: Build Money Transfer Service
         run: |
           mvn clean
           mvn -B package --file pom.xml
