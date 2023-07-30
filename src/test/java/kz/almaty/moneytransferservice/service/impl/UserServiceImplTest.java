@@ -12,9 +12,11 @@ import kz.almaty.moneytransferservice.model.Transaction;
 import kz.almaty.moneytransferservice.model.User;
 import kz.almaty.moneytransferservice.repository.UserRepository;
 import kz.almaty.moneytransferservice.service.TransactionService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -28,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+import static org.testcontainers.shaded.org.awaitility.Awaitility.given;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
@@ -265,24 +268,25 @@ public class UserServiceImplTest {
         });
     }
 
-//    @Test
-//    public void testGetAll() {
-//        List<User> users = List.of(
-//                new User("Somename1", "SomeLastName1", "someemail1", "1", BigDecimal.valueOf(100), "ACTIVE"),
-//                new User("Somename2", "SomeLastName2", "someemail12", "2", BigDecimal.valueOf(50), "ACTIVE"));
-//        when(userRepository.findAll()).thenReturn(users);
-//
-//        List<UserDto> result = userService.getAll();
-//
-//        assertEquals(users.size(), result.size());
-//        for (int i = 0; i < users.size(); i++) {
-//            User user = users.get(i);
-//            UserDto userDto = result.get(i);
-//            assertEquals(user.getFirstName(), userDto.getFirstName());
-//            assertEquals(user.getLastName(), userDto.getLastName());
-//            assertEquals(user.getEmail(), userDto.getEmail());
-//        }
-//        verify(userRepository).findAll();
-//    }
+    @Test
+    public void testGetAll() {
+
+      User  user1 = User.builder()
+                .firstName("firstName2")
+                .lastName("lastName2")
+                .accountNumber("2")
+                .accountBalance(BigDecimal.ZERO)
+                .email("email2")
+                .createdAt(LocalDateTime.now().withNano(0))
+                .updatedAt(LocalDateTime.now().withNano(0))
+                .build();
+
+        BDDMockito.given(userRepository.findAll()).willReturn(List.of(user, user1));
+
+        List<UserDto> userDtoList = userService.getAll();
+
+        assertThat(userDtoList).isNotNull();
+        assertThat(userDtoList.size()).isEqualTo(2);
+    }
 
 }
