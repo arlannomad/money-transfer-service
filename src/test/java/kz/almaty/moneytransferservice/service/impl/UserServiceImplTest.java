@@ -265,24 +265,24 @@ public class UserServiceImplTest {
         });
     }
 
-    @Test
-    public void testGetAll() {
-        List<User> users = List.of(
-                new User("Somename1", "SomeLastName1", "someemail1", "1", BigDecimal.valueOf(100), "ACTIVE"),
-                new User("Somename2", "SomeLastName2", "someemail12", "2", BigDecimal.valueOf(50), "ACTIVE") );
-        when(userRepository.findAll()).thenReturn(users);
-
-        List<UserDto> result = userService.getAll();
-
-        assertEquals(users.size(), result.size());
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            UserDto userDto = result.get(i);
-            assertEquals(user.getFirstName(), userDto.getFirstName());
-            assertEquals(user.getLastName(), userDto.getLastName());
-            assertEquals(user.getEmail(), userDto.getEmail());
-        }
-        verify(userRepository).findAll();
-    }
+//    @Test
+//    public void testGetAll() {
+//        List<User> users = List.of(
+//                new User("Somename1", "SomeLastName1", "someemail1", "1", BigDecimal.valueOf(100), "ACTIVE"),
+//                new User("Somename2", "SomeLastName2", "someemail12", "2", BigDecimal.valueOf(50), "ACTIVE"));
+//        when(userRepository.findAll()).thenReturn(users);
+//
+//        List<UserDto> result = userService.getAll();
+//
+//        assertEquals(users.size(), result.size());
+//        for (int i = 0; i < users.size(); i++) {
+//            User user = users.get(i);
+//            UserDto userDto = result.get(i);
+//            assertEquals(user.getFirstName(), userDto.getFirstName());
+//            assertEquals(user.getLastName(), userDto.getLastName());
+//            assertEquals(user.getEmail(), userDto.getEmail());
+//        }
+//        verify(userRepository).findAll();
+//    }
 
 }

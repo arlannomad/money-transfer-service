@@ -13,8 +13,8 @@ public class UserMapper {
                 .accountNumber(user.getAccountNumber())
                 .accountBalance(user.getAccountBalance())
                 .email(user.getEmail())
-                .createdAt(user.getCreatedAt())
-                .updatedAt(user.getUpdatedAt())
+                .createdAt(user.getCreatedAt().withNano(0))
+                .updatedAt(user.getUpdatedAt().withNano(0))
                 .build();
     }
 
@@ -25,8 +25,8 @@ public class UserMapper {
                 .accountNumber(userDto.getAccountNumber())
                 .accountBalance(BigDecimal.ZERO)
                 .email(userDto.getEmail())
-                .createdAt(userDto.getCreatedAt())
-                .updatedAt(userDto.getUpdatedAt())
+                .createdAt(userDto.getCreatedAt().withNano(0))
+                .updatedAt(userDto.getUpdatedAt().withNano(0))
                 .build();
     }
 }

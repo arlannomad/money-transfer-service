@@ -20,7 +20,7 @@ public class TransactionMapper {
                 .transactionAmount(transactionDto.getTransactionAmount())
                 .accountNumber(transactionDto.getAccountNumber())
                 .status(transactionDto.getStatus())
-                .createdAt(transactionDto.getCreatedAt())
+                .createdAt(transactionDto.getCreatedAt().withNano(0))
                 .build();
     }
 }
