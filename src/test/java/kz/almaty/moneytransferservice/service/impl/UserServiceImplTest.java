@@ -12,7 +12,6 @@ import kz.almaty.moneytransferservice.model.Transaction;
 import kz.almaty.moneytransferservice.model.User;
 import kz.almaty.moneytransferservice.repository.UserRepository;
 import kz.almaty.moneytransferservice.service.TransactionService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,7 +29,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
-import static org.testcontainers.shaded.org.awaitility.Awaitility.given;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
