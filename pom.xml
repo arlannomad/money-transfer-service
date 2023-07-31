@@ -90,6 +90,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>money-transfer-service</finalName>
     </build>
 
 </project>
