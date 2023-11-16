@@ -13,5 +13,7 @@ public interface UserService {
     UserDto creditAccount(CreditDebitRequest request);
     UserDto debitAccount(CreditDebitRequest request);
     UserDto transfer(TransferRequest request);
+    void deleteByAccountNumber(String accountNumber);
+    UserDto updateByAccountNumber(String accountNumber, UserDto userDto);
     List<UserDto> getAll();
 }

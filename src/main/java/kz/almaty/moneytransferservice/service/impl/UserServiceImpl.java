@@ -140,6 +140,31 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public void deleteByAccountNumber(String accountNumber) {
+        boolean isAccountExists = userRepository.existsByAccountNumber(accountNumber);
+        if (!isAccountExists) {
+            throw new ResourceNotFoundException("Account Number: (" + accountNumber + ") doesn't exist");
+        }
+        User user = userRepository.findByAccountNumber(accountNumber);
+        userRepository.delete(user);
+    }
+
+    @Override
+    public UserDto updateByAccountNumber(String accountNumber, UserDto userDto) {
+        boolean isAccountExists = userRepository.existsByAccountNumber(accountNumber);
+        if (!isAccountExists) {
+            throw new ResourceNotFoundException("Account Number: (" + accountNumber + ") doesn't exist");
+        }
+        User user = userRepository.findByAccountNumber(accountNumber);
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setEmail(userDto.getEmail());
+        User updatedUser = userRepository.save(user);
+
+        return UserMapper.mapToDto(updatedUser);
+    }
+
+    @Override
     public List<UserDto> getAll() {
         List<User> users = userRepository.findAll();
         return users.stream().map(UserMapper::mapToDto).toList();

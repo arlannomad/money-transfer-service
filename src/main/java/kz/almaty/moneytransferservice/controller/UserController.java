@@ -41,6 +41,16 @@ public class UserController {
         return userService.transfer(request);
     }
 
+    @PutMapping("/updateByAccountNumber/{accountNumber}")
+    public UserDto updateByAccountNumber(@PathVariable("accountNumber") String accountNumber, @RequestBody UserDto userDto) {
+        return userService.updateByAccountNumber(accountNumber, userDto);
+    }
+
+    @DeleteMapping("/deleteByAccountNumber/{accountNumber}")
+    public void deleteByAccountNumber(@PathVariable("accountNumber") String accountNumber) {
+        userService.deleteByAccountNumber(accountNumber);
+    }
+
     @GetMapping("/getAllAccounts")
     public List<UserDto> getAllUsers() {
         return userService.getAll();
