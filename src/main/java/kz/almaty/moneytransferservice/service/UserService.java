@@ -1,6 +1,7 @@
 package kz.almaty.moneytransferservice.service;
 
 import kz.almaty.moneytransferservice.dto.CreditDebitRequest;
+import kz.almaty.moneytransferservice.dto.PageDto;
 import kz.almaty.moneytransferservice.dto.TransferRequest;
 import kz.almaty.moneytransferservice.dto.UserDto;
 
@@ -15,5 +16,5 @@ public interface UserService {
     UserDto transfer(TransferRequest request);
     void deleteByAccountNumber(String accountNumber);
     UserDto updateByAccountNumber(String accountNumber, UserDto userDto);
-    List<UserDto> getAll();
+    PageDto getAllUsersByPages(int pageNumber, int pageSize, String sortBy, String sortDirection);
 }

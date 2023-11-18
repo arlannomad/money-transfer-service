@@ -1,9 +1,6 @@
 package kz.almaty.moneytransferservice.service.impl;
 
-import kz.almaty.moneytransferservice.dto.CreditDebitRequest;
-import kz.almaty.moneytransferservice.dto.TransactionDto;
-import kz.almaty.moneytransferservice.dto.TransferRequest;
-import kz.almaty.moneytransferservice.dto.UserDto;
+import kz.almaty.moneytransferservice.dto.*;
 import kz.almaty.moneytransferservice.enums.TransactionType;
 import kz.almaty.moneytransferservice.exception.already_exists_exception.ResourceAlreadyExistsException;
 import kz.almaty.moneytransferservice.exception.insufficient_balance.InsufficientBalanceException;
@@ -15,10 +12,15 @@ import kz.almaty.moneytransferservice.service.TransactionService;
 import kz.almaty.moneytransferservice.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -165,9 +167,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getAll() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(UserMapper::mapToDto).toList();
+    public PageDto getAllUsersByPages(int pageNumber, int pageSize, String sortBy, String sortDirection) {
+        Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+        Page<User> posts = userRepository.findAll(pageable);
+        List<User> postList = posts.getContent();
+        List<UserDto> content = postList.stream().map(UserMapper::mapToDto).collect(Collectors.toList());
+        return PageDto.builder()
+                .content(content)
+                .pageNumber(posts.getNumber())
+                .pageSize(posts.getSize())
+                .pageSize(posts.getSize())
+                .totalElements(posts.getTotalElements())
+                .totalPages(posts.getTotalPages())
+                .last(posts.isLast())
+                .build();
     }
 
 }

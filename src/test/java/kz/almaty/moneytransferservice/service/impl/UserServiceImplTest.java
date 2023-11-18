@@ -266,25 +266,25 @@ public class UserServiceImplTest {
         });
     }
 
-    @Test
-    public void testGetAll() {
-
-      User  user1 = User.builder()
-                .firstName("firstName2")
-                .lastName("lastName2")
-                .accountNumber("2")
-                .accountBalance(BigDecimal.ZERO)
-                .email("email2")
-                .createdAt(LocalDateTime.now().withNano(0))
-                .updatedAt(LocalDateTime.now().withNano(0))
-                .build();
-
-        BDDMockito.given(userRepository.findAll()).willReturn(List.of(user, user1));
-
-        List<UserDto> userDtoList = userService.getAll();
-
-        assertThat(userDtoList).isNotNull();
-        assertThat(userDtoList.size()).isEqualTo(2);
-    }
+//    @Test
+//    public void testGetAll() {
+//
+//      User  user1 = User.builder()
+//                .firstName("firstName2")
+//                .lastName("lastName2")
+//                .accountNumber("2")
+//                .accountBalance(BigDecimal.ZERO)
+//                .email("email2")
+//                .createdAt(LocalDateTime.now().withNano(0))
+//                .updatedAt(LocalDateTime.now().withNano(0))
+//                .build();
+//
+//        BDDMockito.given(userRepository.findAll()).willReturn(List.of(user, user1));
+//
+//        List<UserDto> userDtoList = userService.getAll();
+//
+//        assertThat(userDtoList).isNotNull();
+//        assertThat(userDtoList.size()).isEqualTo(2);
+//    }
 
 }
