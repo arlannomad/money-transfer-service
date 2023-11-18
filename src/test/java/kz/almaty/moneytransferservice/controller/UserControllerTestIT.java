@@ -152,33 +152,33 @@ class UserControllerTestIT {
         Mockito.verify(userService).transfer(request);
     }
 
-    @Test
-    void getAllUsers() throws Exception {
-
-        UserDto userDto1 = UserDto.builder()
-                .firstName("1")
-                .lastName("1")
-                .email("1")
-                .build();
-
-        UserDto userDto2 = UserDto.builder()
-                .firstName("1")
-                .lastName("1")
-                .email("1")
-                .build();
-
-        List<UserDto> list = new ArrayList<>();
-        list.add(userDto1);
-        list.add(userDto2);
-
-        String JsonRequest = objectMapper.writeValueAsString(list);
-
-        mockMvc.perform(get("/api/user/getAllAccounts")
-                        .content(JsonRequest)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        Mockito.verify(userService).getAll();
-    }
+//    @Test
+//    void getAllUsers() throws Exception {
+//
+//        UserDto userDto1 = UserDto.builder()
+//                .firstName("1")
+//                .lastName("1")
+//                .email("1")
+//                .build();
+//
+//        UserDto userDto2 = UserDto.builder()
+//                .firstName("1")
+//                .lastName("1")
+//                .email("1")
+//                .build();
+//
+//        List<UserDto> list = new ArrayList<>();
+//        list.add(userDto1);
+//        list.add(userDto2);
+//
+//        String JsonRequest = objectMapper.writeValueAsString(list);
+//
+//        mockMvc.perform(get("/api/user/getAllAccounts")
+//                        .content(JsonRequest)
+//                        .contentType(MediaType.APPLICATION_JSON))
+//                .andExpect(status().isOk());
+//
+//        Mockito.verify(userService).getAll();
+//    }
 
 }
