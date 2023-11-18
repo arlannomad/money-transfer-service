@@ -66,6 +66,11 @@ public class UserController {
         return new ResponseEntity<>("Account Deleted Successfully", HttpStatus.OK);
     }
 
+    @GetMapping("/getAllAccounts")
+    public List<UserDto> getAllUsers() {
+        return userService.getAll();
+    }
+
     @Operation(summary = "Find And Sort All Accounts REST API")
     @ApiResponse(responseCode = "200",
             description = "Http Status 200 OK")

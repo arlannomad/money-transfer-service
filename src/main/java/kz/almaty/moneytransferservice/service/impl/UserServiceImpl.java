@@ -167,6 +167,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDto> getAll() {
+        List<User> users = userRepository.findAll();
+        return users.stream().map(UserMapper::mapToDto).toList();
+    }
+
+    @Override
     public PageDto getAllUsersByPages(int pageNumber, int pageSize, String sortBy, String sortDirection) {
         Sort sort = sortDirection.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();

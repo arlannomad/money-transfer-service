@@ -16,5 +16,6 @@ public interface UserService {
     UserDto transfer(TransferRequest request);
     void deleteByAccountNumber(String accountNumber);
     UserDto updateByAccountNumber(String accountNumber, UserDto userDto);
+    List<UserDto> getAll();
     PageDto getAllUsersByPages(int pageNumber, int pageSize, String sortBy, String sortDirection);
 }
