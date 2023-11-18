@@ -166,11 +166,11 @@ public class UserServiceImpl implements UserService {
         return UserMapper.mapToDto(updatedUser);
     }
 
-    @Override
-    public List<UserDto> getAll() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map(UserMapper::mapToDto).toList();
-    }
+//    @Override
+//    public List<UserDto> getAll() {
+//        List<User> users = userRepository.findAll();
+//        return users.stream().map(UserMapper::mapToDto).toList();
+//    }
 
     @Override
     public PageDto getAllUsersByPages(int pageNumber, int pageSize, String sortBy, String sortDirection) {
