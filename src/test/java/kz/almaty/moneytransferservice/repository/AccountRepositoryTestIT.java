@@ -1,6 +1,6 @@
 package kz.almaty.moneytransferservice.repository;
 
-import kz.almaty.moneytransferservice.model.User;
+import kz.almaty.moneytransferservice.model.Account;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -17,57 +17,54 @@ import static org.assertj.core.api.Assertions.assertThat;
 @DataJpaTest
 @Testcontainers
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class UserRepositoryTestIT {
+public class AccountRepositoryTestIT {
     private static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer();
 
 
     @Autowired
-    private UserRepository userRepository;
+    private AccountRepository accountRepository;
 
     @Test
     void existsByEmail() {
-        User user = User.builder()
+        Account user = Account.builder()
                 .firstName("Firstname")
                 .lastName("Lastname")
-                .email("email")
                 .accountNumber("123")
                 .accountBalance(BigDecimal.valueOf(100))
                 .createdAt(LocalDateTime.now().withNano(0))
                 .updatedAt(LocalDateTime.now().withNano(0))
                 .build();
-        User savedUser = userRepository.save(user);
+        Account savedUser = accountRepository.save(user);
         assertThat(savedUser).usingRecursiveComparison().ignoringFields("id")
                 .isEqualTo(user);
     }
 
     @Test
     void existsByAccountNumber() {
-        User user = User.builder()
+        Account user = Account.builder()
                 .firstName("Firstname")
                 .lastName("Lastname")
-                .email("email")
                 .accountNumber("123")
                 .accountBalance(BigDecimal.valueOf(100))
                 .createdAt(LocalDateTime.now().withNano(0))
                 .updatedAt(LocalDateTime.now().withNano(0))
                 .build();
-        User savedUser = userRepository.save(user);
+        Account savedUser = accountRepository.save(user);
         assertThat(savedUser).usingRecursiveComparison().ignoringFields("id")
                 .isEqualTo(user);
     }
 
     @Test
     void findByAccountNumber() {
-        User user = User.builder()
+        Account user = Account.builder()
                 .firstName("Firstname")
                 .lastName("Lastname")
-                .email("email")
                 .accountNumber("123")
                 .accountBalance(BigDecimal.valueOf(100))
                 .createdAt(LocalDateTime.now().withNano(0))
                 .updatedAt(LocalDateTime.now().withNano(0))
                 .build();
-        User savedUser = userRepository.save(user);
+        Account savedUser = accountRepository.save(user);
         assertThat(savedUser).usingRecursiveComparison().ignoringFields("id")
                 .isEqualTo(user);
 

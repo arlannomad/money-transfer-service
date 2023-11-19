@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class PageDto {
-    private List<UserDto> content;
+    private List<AccountDto> content;
     private int pageNumber;
     private int pageSize;
     private Long totalElements;

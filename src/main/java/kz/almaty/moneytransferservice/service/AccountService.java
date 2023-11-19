@@ -3,19 +3,17 @@ package kz.almaty.moneytransferservice.service;
 import kz.almaty.moneytransferservice.dto.CreditDebitRequest;
 import kz.almaty.moneytransferservice.dto.PageDto;
 import kz.almaty.moneytransferservice.dto.TransferRequest;
-import kz.almaty.moneytransferservice.dto.UserDto;
+import kz.almaty.moneytransferservice.dto.AccountDto;
 
-import java.util.List;
-
-public interface UserService {
+public interface AccountService {
     //    BankResponse addAccount(UserDto userRequest);
-    UserDto addAccount(UserDto userDto);
-    UserDto findByAccountNumber(CreditDebitRequest enquiryRequest);
-    UserDto creditAccount(CreditDebitRequest request);
-    UserDto debitAccount(CreditDebitRequest request);
-    UserDto transfer(TransferRequest request);
+    AccountDto addAccount(AccountDto accountDto);
+    AccountDto findByAccountNumber(CreditDebitRequest enquiryRequest);
+    AccountDto creditAccount(CreditDebitRequest request);
+    AccountDto debitAccount(CreditDebitRequest request);
+    AccountDto transfer(TransferRequest request);
     void deleteByAccountNumber(String accountNumber);
-    UserDto updateByAccountNumber(String accountNumber, UserDto userDto);
+    AccountDto updateByAccountNumber(String accountNumber, AccountDto accountDto);
 //    List<UserDto> getAll();
     PageDto getAllUsersByPages(int pageNumber, int pageSize, String sortBy, String sortDirection);
 }

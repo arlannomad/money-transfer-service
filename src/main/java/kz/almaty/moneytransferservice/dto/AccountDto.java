@@ -12,12 +12,11 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class UserDto {
+public class AccountDto {
     private String firstName;
     private String lastName;
     private String accountNumber;
     private BigDecimal accountBalance;
-    private String email;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

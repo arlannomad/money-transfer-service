@@ -3,8 +3,8 @@ package kz.almaty.moneytransferservice.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.almaty.moneytransferservice.dto.CreditDebitRequest;
 import kz.almaty.moneytransferservice.dto.TransferRequest;
-import kz.almaty.moneytransferservice.dto.UserDto;
-import kz.almaty.moneytransferservice.service.impl.UserServiceImpl;
+import kz.almaty.moneytransferservice.dto.AccountDto;
+import kz.almaty.moneytransferservice.service.impl.AccountServiceImpl;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,17 +24,15 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
-@WebMvcTest(UserController.class)
+@WebMvcTest(AccountController.class)
 @Testcontainers
-class UserControllerTestIT {
+class AccountControllerTestIT {
 
     @Autowired
     private WebApplicationContext context;
@@ -53,13 +51,13 @@ class UserControllerTestIT {
     ObjectMapper objectMapper;
 
     @MockBean
-    private UserServiceImpl userService;
+    private AccountServiceImpl userService;
 
-    private static UserDto userDto;
+    private static AccountDto accountDto;
 
     @BeforeEach
     public void setUp() {
-        userDto = UserDto.builder()
+        accountDto = AccountDto.builder()
                 .firstName("firstName")
                 .lastName("lastName")
                 .accountNumber("1")
@@ -73,14 +71,14 @@ class UserControllerTestIT {
     @Test
     public void testAddAccount() throws Exception {
 
-        String JsonRequest = objectMapper.writeValueAsString(userDto);
+        String JsonRequest = objectMapper.writeValueAsString(accountDto);
 
         mockMvc.perform(post("/api/user")
                         .content(JsonRequest)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
 
-        Mockito.verify(userService).addAccount(userDto);
+        Mockito.verify(userService).addAccount(accountDto);
     }
 
     @Test
