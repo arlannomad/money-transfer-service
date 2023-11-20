@@ -62,7 +62,6 @@ class AccountControllerTestIT {
                 .lastName("lastName")
                 .accountNumber("1")
                 .accountBalance(BigDecimal.valueOf(100))
-                .email("email")
                 .createdAt(LocalDateTime.now().withNano(0))
                 .updatedAt(LocalDateTime.now().withNano(0))
                 .build();

@@ -66,7 +66,7 @@ public class AccountServiceImplTest {
     @Test
     public void testAddAccount_AccountDoesNotExist() {
 
-        when(accountRepository.existsByEmail(accountDto.getAccountNumber())).thenReturn(false);
+        when(accountRepository.existsByAccountNumber(accountDto.getAccountNumber())).thenReturn(false);
         when(accountRepository.save(any(Account.class))).thenReturn(user);
 
         AccountDto savedAccountDto = userService.addAccount(accountDto);
@@ -75,14 +75,14 @@ public class AccountServiceImplTest {
         assertEquals("firstName", savedAccountDto.getFirstName());
         assertEquals("lastName", savedAccountDto.getLastName());
 
-        verify(accountRepository).existsByEmail(accountDto.getAccountNumber());
+        verify(accountRepository).existsByAccountNumber(accountDto.getAccountNumber());
         verify(accountRepository).save(any(Account.class));
     }
 
     @Test
     public void testAddAccount_AccountAlreadyExists() {
 
-        when(accountRepository.existsByEmail(accountDto.getAccountNumber())).thenReturn(true);
+        when(accountRepository.existsByAccountNumber(accountDto.getAccountNumber())).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> {
             userService.addAccount(accountDto);
