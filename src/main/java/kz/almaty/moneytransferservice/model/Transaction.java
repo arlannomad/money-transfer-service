@@ -20,8 +20,10 @@ import java.time.LocalDateTime;
 @Table(name = "transactions")
 public class Transaction {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String transactionId;
+//    @GeneratedValue(strategy = GenerationType.UUID)
+//    private String transactionId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private TransactionType transactionType;
     private BigDecimal transactionAmount;
     private String accountNumber;

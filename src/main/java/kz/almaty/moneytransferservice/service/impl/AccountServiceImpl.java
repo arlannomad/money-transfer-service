@@ -30,7 +30,6 @@ public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
     private final TransactionService transactionService;
 
-
     @Override
     public AccountDto addAccount(AccountDto accountDto) {
 

@@ -8,11 +8,13 @@ import kz.almaty.moneytransferservice.enums.TransactionType;
 import kz.almaty.moneytransferservice.exception.already_exists_exception.ResourceAlreadyExistsException;
 import kz.almaty.moneytransferservice.exception.insufficient_balance.InsufficientBalanceException;
 import kz.almaty.moneytransferservice.exception.not_found_exception.ResourceNotFoundException;
+import kz.almaty.moneytransferservice.mapper.AccountMapper;
 import kz.almaty.moneytransferservice.model.Transaction;
 import kz.almaty.moneytransferservice.model.Account;
 import kz.almaty.moneytransferservice.repository.AccountRepository;
 import kz.almaty.moneytransferservice.service.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,24 +25,29 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.testcontainers.shaded.org.awaitility.Awaitility.given;
 
 @ExtendWith(MockitoExtension.class)
 public class AccountServiceImplTest {
     @Mock
     private AccountRepository accountRepository;
     @InjectMocks
-    private AccountServiceImpl userService;
+    private AccountServiceImpl accountService;
     @Mock
     TransactionService transactionService;
-    private Account user;
+    private Account account;
     private AccountDto accountDto;
 
     private Transaction transaction;
     private TransactionDto transactionDto;
+
 
     @BeforeEach
     public void setUp() {
@@ -53,7 +60,7 @@ public class AccountServiceImplTest {
                 .updatedAt(LocalDateTime.now().withNano(0))
                 .build();
 
-        user = Account.builder()
+        account = Account.builder()
                 .firstName("firstName")
                 .lastName("lastName")
                 .accountNumber("1")
@@ -64,12 +71,12 @@ public class AccountServiceImplTest {
     }
 
     @Test
-    public void testAddAccount_AccountDoesNotExist() {
+    public void testAddAccount() {
 
         when(accountRepository.existsByAccountNumber(accountDto.getAccountNumber())).thenReturn(false);
-        when(accountRepository.save(any(Account.class))).thenReturn(user);
+        when(accountRepository.save(any(Account.class))).thenReturn(account);
 
-        AccountDto savedAccountDto = userService.addAccount(accountDto);
+        AccountDto savedAccountDto = accountService.addAccount(accountDto);
 
         assertThat(savedAccountDto).isNotNull();
         assertEquals("firstName", savedAccountDto.getFirstName());
@@ -85,7 +92,7 @@ public class AccountServiceImplTest {
         when(accountRepository.existsByAccountNumber(accountDto.getAccountNumber())).thenReturn(true);
 
         assertThrows(ResourceAlreadyExistsException.class, () -> {
-            userService.addAccount(accountDto);
+            accountService.addAccount(accountDto);
         });
 
     }
@@ -96,9 +103,9 @@ public class AccountServiceImplTest {
         request.setAccountNumber("1");
 
         when(accountRepository.existsByAccountNumber(request.getAccountNumber())).thenReturn(true);
-        when(accountRepository.findByAccountNumber(user.getAccountNumber())).thenReturn(user);
+        when(accountRepository.findByAccountNumber(account.getAccountNumber())).thenReturn(account);
 
-        AccountDto dto = userService.findByAccountNumber(request);
+        AccountDto dto = accountService.findByAccountNumber(request);
 
         assertEquals("1", dto.getAccountNumber());
 
@@ -113,7 +120,7 @@ public class AccountServiceImplTest {
         when(accountRepository.existsByAccountNumber(null)).thenReturn(false);
 
         assertThrows(ResourceNotFoundException.class, () -> {
-            userService.findByAccountNumber(request);
+            accountService.findByAccountNumber(request);
         });
     }
 
@@ -134,13 +141,13 @@ public class AccountServiceImplTest {
         CreditDebitRequest request = new CreditDebitRequest();
         request.setAccountNumber("1");
         request.setAmount(BigDecimal.valueOf(100));
-        user.setAccountBalance(user.getAccountBalance().add(request.getAmount()));
+        account.setAccountBalance(account.getAccountBalance().add(request.getAmount()));
 
         when(accountRepository.existsByAccountNumber(request.getAccountNumber())).thenReturn(true);
-        when(accountRepository.findByAccountNumber(user.getAccountNumber())).thenReturn(user);
+        when(accountRepository.findByAccountNumber(account.getAccountNumber())).thenReturn(account);
         doNothing().when(transactionService).saveTransaction(transactionDto);
 
-        accountDto = userService.creditAccount(request);
+        accountDto = accountService.creditAccount(request);
 
         assertEquals("1", accountDto.getAccountNumber());
 
@@ -154,7 +161,7 @@ public class AccountServiceImplTest {
         when(accountRepository.existsByAccountNumber(null)).thenReturn(false);
 
         assertThrows(ResourceNotFoundException.class, () -> {
-            userService.creditAccount(request);
+            accountService.creditAccount(request);
         });
     }
 
@@ -176,13 +183,13 @@ public class AccountServiceImplTest {
         CreditDebitRequest request = new CreditDebitRequest();
         request.setAccountNumber("1");
         request.setAmount(BigDecimal.valueOf(0));
-        user.setAccountBalance(user.getAccountBalance().subtract(request.getAmount()));
+        account.setAccountBalance(account.getAccountBalance().subtract(request.getAmount()));
 
         when(accountRepository.existsByAccountNumber(request.getAccountNumber())).thenReturn(true);
-        when(accountRepository.findByAccountNumber(user.getAccountNumber())).thenReturn(user);
+        when(accountRepository.findByAccountNumber(account.getAccountNumber())).thenReturn(account);
         doNothing().when(transactionService).saveTransaction(transactionDto);
 
-        accountDto = userService.debitAccount(request);
+        accountDto = accountService.debitAccount(request);
 
         assertEquals("1", accountDto.getAccountNumber());
 
@@ -196,10 +203,10 @@ public class AccountServiceImplTest {
         request.setAccountNumber("1");
         request.setAmount(BigDecimal.valueOf(1000));
         when(accountRepository.existsByAccountNumber("1")).thenReturn(true);
-        when(accountRepository.findByAccountNumber("1")).thenReturn(user);
+        when(accountRepository.findByAccountNumber("1")).thenReturn(account);
 
         assertThrows(InsufficientBalanceException.class, () -> {
-            userService.debitAccount(request);
+            accountService.debitAccount(request);
         });
     }
 
@@ -210,7 +217,7 @@ public class AccountServiceImplTest {
         when(accountRepository.existsByAccountNumber(null)).thenReturn(false);
 
         assertThrows(ResourceNotFoundException.class, () -> {
-            userService.debitAccount(request);
+            accountService.debitAccount(request);
         });
     }
 
@@ -220,7 +227,7 @@ public class AccountServiceImplTest {
         when(accountRepository.existsByAccountNumber(null)).thenReturn(false);
 
         assertThrows(ResourceNotFoundException.class, () -> {
-            userService.transfer(request);
+            accountService.transfer(request);
         });
     }
 
@@ -231,13 +238,13 @@ public class AccountServiceImplTest {
         request.setToAccount("1");
         request.setTransferAmount(BigDecimal.valueOf(1));
 
-        user.setAccountBalance(user.getAccountBalance().add(request.getTransferAmount()));
+        account.setAccountBalance(account.getAccountBalance().add(request.getTransferAmount()));
 
         when(accountRepository.existsByAccountNumber(request.getToAccount())).thenReturn(true);
-        when(accountRepository.findByAccountNumber(request.getFromAccount())).thenReturn(user);
-        when(accountRepository.findByAccountNumber(request.getToAccount())).thenReturn(user);
+        when(accountRepository.findByAccountNumber(request.getFromAccount())).thenReturn(account);
+        when(accountRepository.findByAccountNumber(request.getToAccount())).thenReturn(account);
 
-        accountDto = userService.transfer(request);
+        accountDto = accountService.transfer(request);
 
         assertEquals("1", accountDto.getAccountNumber());
 
@@ -251,15 +258,24 @@ public class AccountServiceImplTest {
         request.setToAccount("2");
         request.setTransferAmount(BigDecimal.valueOf(1));
 
-        user.setAccountBalance(user.getAccountBalance().subtract(request.getTransferAmount()));
-        user.setAccountBalance(user.getAccountBalance().add(request.getTransferAmount()));
+        account.setAccountBalance(account.getAccountBalance().subtract(request.getTransferAmount()));
+        account.setAccountBalance(account.getAccountBalance().add(request.getTransferAmount()));
 
         when(accountRepository.existsByAccountNumber(request.getToAccount())).thenReturn(true);
-        when(accountRepository.findByAccountNumber(user.getAccountNumber())).thenReturn(user);
+        when(accountRepository.findByAccountNumber(account.getAccountNumber())).thenReturn(account);
 
         assertThrows(InsufficientBalanceException.class, () -> {
-            userService.transfer(request);
+            accountService.transfer(request);
         });
+    }
+
+    @Test
+    public void updateByAccountNumber_when_Account_number_does_not_exist() {
+
+    }
+
+    public void test_deleteByAccountNumber(String accountNumber) {
+
     }
 
 //    @Test
@@ -282,5 +298,12 @@ public class AccountServiceImplTest {
 //        assertThat(userDtoList).isNotNull();
 //        assertThat(userDtoList.size()).isEqualTo(2);
 //    }
+
+
+
+    @Test
+    public void testUpdateExistingAccount() {
+
+    }
 
 }
