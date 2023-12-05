@@ -55,10 +55,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeHttpRequests) ->
                         authorizeHttpRequests.requestMatchers(HttpMethod.GET, "api/v1/**").permitAll()
                                 .requestMatchers("/api/v1/auth/**").permitAll()
-                                .requestMatchers("/api/user/**").permitAll()
+//                                .requestMatchers("/api/user/**").permitAll()
+                                .requestMatchers("/api/user/**").hasRole("ADMIN")
 //                                        .requestMatchers(HttpMethod.GET,"api/categories/**").permitAll()
-                                .requestMatchers("/swagger-ui/**").permitAll()
-                                .requestMatchers("/v3/api-docs/**").permitAll()
+//                                .requestMatchers("/swagger-ui/**").permitAll()
+//                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").hasRole("ADMIN")
+                                .requestMatchers("/v3/api-docs/**").hasRole("ADMIN")
                                 .anyRequest()
                                 .authenticated())
                 .httpBasic(Customizer
